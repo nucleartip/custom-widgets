@@ -33,6 +33,7 @@ proguard/
 *.iml
 .idea/
 *.exec
+output.json
 
 # IntelliJ
 *.iml
