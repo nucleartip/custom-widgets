@@ -11,7 +11,45 @@
         <attr name="guidelinesColor" format="color" />
         <attr name="indicatorTextColor" format="color" />
         <attr name="indicatorTextSize" format="dimension" />
-        <attr name="label_guideline_spacing" format="dimension"/>
-        <attr name="bar_width" format="dimension"/>
+        <attr name="label_guideline_spacing" format="dimension" />
+        <attr name="bar_width" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="TwoLinerTextView">
+
+        <attr name="primary_text_color" format="color" />
+        <attr name="secondary_text_color" format="color" />
+        <attr name="primary_text_size" format="dimension" />
+        <attr name="secondary_text_size" format="dimension" />
+        <attr name="primary_text_single_line" format="boolean"/>
+        <attr name="secondary_text_single_line" format="boolean"/>
+        <attr name="primary_text_max_line" format="integer"/>
+        <attr name="secondary_text_max_line" format="integer"/>
+        <attr name="spacing" format="dimension"/>
+
+        <attr name="primary_text_typeface" format="enum">
+            <enum name="Sans" value="0" />
+            <enum name="Serif" value="1" />
+            <enum name="Monospace" value="2" />
+        </attr>
+
+        <attr name="secondary_text_typeface" format="enum">
+            <enum name="Sans" value="0" />
+            <enum name="Serif" value="1" />
+            <enum name="Monospace" value="2" />
+        </attr>
+
+        <attr name="primary_text_style" format="enum">
+            <enum name="Bold" value="0" />
+            <enum name="Italic" value="1" />
+            <enum name="Default" value="2" />
+        </attr>
+
+        <attr name="secondary_text_style" format="enum">
+            <enum name="Bold" value="0" />
+            <enum name="Italic" value="1" />
+            <enum name="Default" value="2" />
+        </attr>
+    </declare-styleable>
+
 </resources>
