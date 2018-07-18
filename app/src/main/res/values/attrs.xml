@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BarGraph">
-        <attr name="barColor" format="color" />
         <attr name="fillType" format="enum">
             <enum name="hollow" value="1" />
             <enum name="solid" value="2" />
         </attr>
+        <attr name="drawAxis" format="enum">
+            <enum name="xaxis" value="1" />
+            <enum name="yaxis" value="2" />
+            <enum name="both" value="3" />
+            <enum name="none" value="4" />
+        </attr>
         <attr name="strokeWidth" format="dimension" />
-        <attr name="drawGuidelines" format="boolean" />
-        <attr name="guidelinesColor" format="color" />
+        <attr name="barColor" format="color" />
+        <attr name="axisColor" format="color" />
         <attr name="indicatorTextColor" format="color" />
         <attr name="indicatorTextSize" format="dimension" />
-        <attr name="label_guideline_spacing" format="dimension"/>
-        <attr name="bar_width" format="dimension"/>
+        <attr name="labelAxisSpacing" format="dimension" />
+        <attr name="barWidth" format="dimension" />
+        <attr name="displayEmptyPlaceholder" format="boolean" />
+        <attr name="emptyMessage" format="string" />
+        <attr name="emptyLabels" format="reference" />
     </declare-styleable>
 </resources>

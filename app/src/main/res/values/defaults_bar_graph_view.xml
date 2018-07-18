@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="guidelinesColor">@android:color/white</color>
+    <color name="axisColor">@android:color/white</color>
     <color name="barColor">@android:color/white</color>
     <color name="indicatorTextColor">@android:color/white</color>
     <dimen name="strokeWidth">4dp</dimen>
     <dimen name="indicatorTextSize">14sp</dimen>
-    <dimen name="guideline_label_margin">8dp</dimen>
+    <dimen name="label_axis_margin">8dp</dimen>
     <dimen name="bar_width">10dp</dimen>
+    <string-array name="empty_labels">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
 </resources>

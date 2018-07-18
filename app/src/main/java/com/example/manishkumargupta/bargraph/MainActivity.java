@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         }
         barGraph.setBarColor(barColor);
         barGraph.setIndicatorTextColor(indicator);
-        barGraph.setGuidelineColor(guideLine);
+        barGraph.setAxisColor(guideLine);
         barDataRepository.updateGraph(entries);
 
     }
