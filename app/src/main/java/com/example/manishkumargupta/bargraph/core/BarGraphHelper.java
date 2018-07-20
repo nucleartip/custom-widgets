@@ -1,10 +1,11 @@
-package com.example.manishkumargupta.bargraph;
+package com.example.manishkumargupta.bargraph.core;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
@@ -15,14 +16,19 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.example.manishkumargupta.bargraph.R;
+import com.example.manishkumargupta.bargraph.view.BarEntry;
+
+import java.util.List;
+
 /**
  * Created by manishkumar.gupta on 17,July,2018
  */
-public class BarGraphHelper {
+class BarGraphHelper {
 
     private final BarGraphInvalidator invalidateHandler;
     @DrawAxis int drawAxis = DrawAxis.BOTH;
-    int fillType = 2;
+    private int fillType = 2;
     int strokeWidth;
     int indicatorTextSize;
     int labelMargin;
@@ -32,12 +38,12 @@ public class BarGraphHelper {
     Paint axisPaint;
     Paint barPaint;
     TextPaint indicatorPaint;
-    CharSequence[] emptyLabels = {};
+    CharSequence[] emptyLabels = new CharSequence[0];
     @Nullable BarDataRepository barDataRepository;
     private ValueAnimator barAnimator;
     private final BarGraph barGraph;
     private final Resources resources;
-    private OnEntryClickedListener onEntryClickedListener;
+    private OnBarClickedListener onBarClickedListener;
 
     BarGraphHelper(BarGraph barGraph) {
         resources = barGraph.getResources();
@@ -58,52 +64,55 @@ public class BarGraphHelper {
     }
 
 
-    public void setDrawAxis(@DrawAxis int drawAxis) {
+    void setDrawAxis(@DrawAxis int drawAxis) {
         this.drawAxis = drawAxis;
         invalidateHandler.invalidate();
     }
 
-    public void setFillType(int fillType) {
+    void setFillType(int fillType) {
         this.fillType = fillType;
         invalidateHandler.invalidate();
     }
 
-    public void setBarColor(@ColorRes int barColor) {
+    void setBarColor(@ColorRes int barColor) {
         barPaint.setColor(resources.getColor(barColor));
         invalidateHandler.invalidate();
     }
 
-    public void setAxisColor(@ColorRes int axisColor) {
+    void setAxisColor(@ColorRes int axisColor) {
         axisPaint.setColor(resources.getColor(axisColor));
         invalidateHandler.invalidate();
     }
 
-    public void setStrokeWidth(@DimenRes int strokeWidth) {
+    void setStrokeWidth(@DimenRes int strokeWidth) {
         this.strokeWidth = resources.getDimensionPixelSize(strokeWidth);
         axisPaint.setStrokeWidth(this.strokeWidth);
         barPaint.setStrokeWidth(this.strokeWidth);
         invalidateHandler.invalidate();
     }
 
-    public void setBarDataRepository(@NonNull BarDataRepository barDataRepository) {
-        this.barDataRepository = barDataRepository;
+    void setBarEntries(@NonNull List<BarEntry> entries) {
+        if(this.barDataRepository == null){
+            barDataRepository = new BarDataRepository();
+        }
         barDataRepository.registerObservableView(this);
+        barDataRepository.updateGraph(entries);
         invalidateHandler.invalidate();
     }
 
-    public void setIndicatorTextColor(@ColorRes int indicatorTextColor) {
+    void setIndicatorTextColor(@ColorRes int indicatorTextColor) {
         indicatorPaint.setColor(resources.getColor(indicatorTextColor));
         invalidateHandler.invalidate();
     }
 
-    public void setIndicatorTextSize(@DimenRes int indicatorTextSize) {
+    void setIndicatorTextSize(@DimenRes int indicatorTextSize) {
         this.indicatorTextSize = resources.getDimensionPixelSize(indicatorTextSize);
         indicatorPaint.setTextSize(this.indicatorTextSize);
         invalidateHandler.invalidate();
     }
 
-    public void setOnEntryClickedListener(OnEntryClickedListener onEntryClickedListener) {
-        this.onEntryClickedListener = onEntryClickedListener;
+    void setOnBarClickedListener(OnBarClickedListener onBarClickedListener) {
+        this.onBarClickedListener = onBarClickedListener;
     }
 
     void invalidate() {
@@ -122,22 +131,22 @@ public class BarGraphHelper {
 
         if (attrs != null) {
             TypedArray array = context.getTheme()
-                    .obtainStyledAttributes(attrs, R.styleable.BarGraph, defStyleAttr, defStyleRes);
+                    .obtainStyledAttributes(attrs, R.styleable.BarChartView, defStyleAttr, defStyleRes);
             try {
-                drawAxis = array.getInt(R.styleable.BarGraph_drawAxis, DrawAxis.BOTH);
-                fillType = array.getInteger(R.styleable.BarGraph_fillType, 2);
-                guidelineColor = array.getColor(R.styleable.BarGraph_axisColor, resources.getColor(R.color.axisColor));
-                barColor = array.getColor(R.styleable.BarGraph_barColor, resources.getColor(R.color.barColor));
-                strokeWidth = array.getDimensionPixelSize(R.styleable.BarGraph_strokeWidth, resources.getDimensionPixelSize(R.dimen
+                drawAxis = array.getInt(R.styleable.BarChartView_drawAxis, DrawAxis.BOTH);
+                fillType = array.getInteger(R.styleable.BarChartView_fillType, 2);
+                guidelineColor = array.getColor(R.styleable.BarChartView_axisColor, resources.getColor(R.color.axisColor));
+                barColor = array.getColor(R.styleable.BarChartView_barColor, resources.getColor(R.color.barColor));
+                strokeWidth = array.getDimensionPixelSize(R.styleable.BarChartView_strokeWidth, resources.getDimensionPixelSize(R.dimen
                         .strokeWidth));
-                indicatorTextColor = array.getColor(R.styleable.BarGraph_indicatorTextColor, resources.getColor(R.color
+                indicatorTextColor = array.getColor(R.styleable.BarChartView_indicatorTextColor, resources.getColor(R.color
                         .indicatorTextColor));
-                indicatorTextSize = array.getDimensionPixelSize(R.styleable.BarGraph_indicatorTextSize, resources.getDimensionPixelSize(R
-                        .dimen.indicatorTextSize));
-                labelMargin = array.getDimensionPixelSize(R.styleable.BarGraph_labelAxisSpacing, resources.getDimensionPixelSize(R.dimen
-                        .label_axis_margin));
-                displayEmptyPlaceholder = array.getBoolean(R.styleable.BarGraph_displayEmptyPlaceholder, true);
-                CharSequence[] temp = array.getTextArray(R.styleable.BarGraph_emptyLabels);
+                indicatorTextSize = array.getDimensionPixelSize(R.styleable.BarChartView_indicatorTextSize, resources
+                        .getDimensionPixelSize(R.dimen.indicatorTextSize));
+                labelMargin = array.getDimensionPixelSize(R.styleable.BarChartView_labelAxisSpacing, resources.getDimensionPixelSize(R
+                        .dimen.label_axis_margin));
+                displayEmptyPlaceholder = array.getBoolean(R.styleable.BarChartView_displayEmptyPlaceholder, true);
+                CharSequence[] temp = array.getTextArray(R.styleable.BarChartView_emptyLabels);
                 if (temp != null && temp.length > 0) {
                     emptyLabels = temp;
                 }
@@ -185,15 +194,18 @@ public class BarGraphHelper {
             barGraph.invalidate();
         });
         barAnimator.start();
-
     }
 
     void processOnClick(float x, float y) {
+        if (onBarClickedListener == null) {
+            return;
+        }
+
         if (barDataRepository != null && barDataRepository.entries.size() > 0) {
             for (EntryWrapper entryWrapper : barDataRepository.entries) {
                 if (entryWrapper.contains(x, y)) {
-                    //onEntryClickedListener.onEntryClicked(entryWrapper.barEntry, new RectF(entryWrapper.left, entryWrapper.top,
-                    //entryWrapper.right, entryWrapper.bottom));
+                    onBarClickedListener.onEntryClicked(entryWrapper.barEntry, new RectF(entryWrapper.left, entryWrapper.top,
+                            entryWrapper.right, entryWrapper.bottom));
                     Log.d("####", "entry clicked = " + entryWrapper.barEntry.toString());
                 }
             }

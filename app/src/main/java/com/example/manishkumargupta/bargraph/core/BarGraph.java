@@ -1,7 +1,6 @@
-package com.example.manishkumargupta.bargraph;
+package com.example.manishkumargupta.bargraph.core;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,9 +10,12 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.example.manishkumargupta.bargraph.view.BarEntry;
 
 import java.util.List;
 
@@ -23,20 +25,8 @@ import java.util.List;
 public class BarGraph extends View {
     private final BarGraphHelper barGraphHelper;
 
-    public BarGraph(Context context) {
-        this(context, null);
-    }
-
-    public BarGraph(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public BarGraph(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
     @SuppressLint("ClickableViewAccessibility")
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public BarGraph(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.barGraphHelper = new BarGraphHelper(this);
@@ -64,8 +54,8 @@ public class BarGraph extends View {
         barGraphHelper.setStrokeWidth(strokeWidth);
     }
 
-    public void setBarDataRepository(@NonNull BarDataRepository barDataRepository) {
-        barGraphHelper.setBarDataRepository(barDataRepository);
+    public void setBarDataRepository(@NonNull List<BarEntry> entries) {
+        barGraphHelper.setBarEntries(entries);
     }
 
     public void setIndicatorTextColor(@ColorRes int indicatorTextColor) {
@@ -76,8 +66,8 @@ public class BarGraph extends View {
         barGraphHelper.setIndicatorTextSize(indicatorTextSize);
     }
 
-    public void setOnEntryClickedListener(OnEntryClickedListener onEntryClickedListener) {
-        barGraphHelper.setOnEntryClickedListener(onEntryClickedListener);
+    public void setOnEntryClickedListener(OnBarClickedListener onBarClickedListener) {
+        barGraphHelper.setOnBarClickedListener(onBarClickedListener);
     }
 
     @Override
@@ -143,7 +133,7 @@ public class BarGraph extends View {
         // horizontal indicator and bars
         List<EntryWrapper> entires = barGraphHelper.barDataRepository.getEntries();
         // offset from where text has to be drawn
-        int offset = getLeft() + getPaddingLeft();
+        int offset = getPaddingLeft();
 
         for (EntryWrapper entryWrapper : entires) {
             BarEntry entry = entryWrapper.barEntry;
@@ -209,7 +199,7 @@ public class BarGraph extends View {
         }
 
         // offset from where text has to be drawn
-        int offset = getLeft() + getPaddingLeft();
+        int offset = getPaddingLeft();
         for (CharSequence entry : barGraphHelper.emptyLabels) {
             // measure the length text is going to take against available space, otherwise ellipsize it
             CharSequence text = TextUtils.ellipsize(entry, barGraphHelper.indicatorPaint, eachEntryWidth, TextUtils.TruncateAt.END);

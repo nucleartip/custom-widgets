@@ -1,4 +1,4 @@
-package com.example.manishkumargupta.bargraph;
+package com.example.manishkumargupta.bargraph.core;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,9 +37,7 @@ class BarGraphTouchListener implements View.OnTouchListener {
                     barGraphHelper.processOnClick(startX, startY);
                 }
                 break;
-
         }
-
         return true;
     }
 }

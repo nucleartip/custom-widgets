@@ -1,12 +1,14 @@
-package com.example.manishkumargupta.bargraph;
+package com.example.manishkumargupta.bargraph.core;
 
 import android.support.annotation.NonNull;
+
+import com.example.manishkumargupta.bargraph.view.BarEntry;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BarDataRepository {
+class BarDataRepository {
 
     @NonNull List<EntryWrapper> entries = new ArrayList<>();
     private WeakReference<BarGraphHelper> observableView;

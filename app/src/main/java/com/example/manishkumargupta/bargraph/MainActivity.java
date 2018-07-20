@@ -2,11 +2,12 @@ package com.example.manishkumargupta.bargraph;
 
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+
+import com.example.manishkumargupta.bargraph.view.BarChartView;
+import com.example.manishkumargupta.bargraph.view.BarEntry;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -16,16 +17,16 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
 
-    private BarGraph barGraph;
+    private BarChartView barChartView;
     private BarHandler handler;
-    private BarDataRepository barDataRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         handler = new BarHandler(this);
-        barGraph = findViewById(R.id.graph);
+        barChartView = findViewById(R.id.graph);
 
 
     }
@@ -37,14 +38,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void populateGraph(List<BarEntry> entries, @ColorRes int barColor, @ColorRes int guideLine, @ColorRes int indicator) {
-        if (barDataRepository == null) {
-            barDataRepository = new BarDataRepository();
-            barGraph.setBarDataRepository(barDataRepository);
-        }
-        barGraph.setBarColor(barColor);
-        barGraph.setIndicatorTextColor(indicator);
-        barGraph.setAxisColor(guideLine);
-        barDataRepository.updateGraph(entries);
+
+        barChartView.setBarColor(barColor);
+        barChartView.setIndicatorTextColor(indicator);
+        barChartView.setAxisColor(guideLine);
+        barChartView.setBarEntries(entries);
 
     }
 
@@ -109,8 +107,9 @@ public class MainActivity extends AppCompatActivity {
             super.handleMessage(msg);
             if (activityWeakReference != null && activityWeakReference.get() != null) {
                 MainActivity activity = activityWeakReference.get();
-                activity.populateGraph(activity.obtainRandomEntry(), activity.obtainColor(), activity.obtainColor(), activity.obtainColor());
-                sendEmptyMessageDelayed(1, 3000);
+                activity.populateGraph(activity.obtainRandomEntry(), activity.obtainColor(), activity.obtainColor(), activity.obtainColor
+                        ());
+                //sendEmptyMessageDelayed(1, 3000);
             }
         }
     }

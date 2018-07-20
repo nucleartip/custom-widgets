@@ -7,6 +7,8 @@
     <dimen name="indicatorTextSize">14sp</dimen>
     <dimen name="label_axis_margin">8dp</dimen>
     <dimen name="bar_width">10dp</dimen>
+    <dimen name="marker_display_area_size">48dp</dimen>
+    <dimen name="dotted_line_width">1dp</dimen>
     <string-array name="empty_labels">
         <item>Mon</item>
         <item>Tue</item>
