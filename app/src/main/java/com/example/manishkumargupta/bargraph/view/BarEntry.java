@@ -1,4 +1,4 @@
-package com.example.manishkumargupta.bargraph;
+package com.example.manishkumargupta.bargraph.view;
 
 import android.support.annotation.NonNull;
 
